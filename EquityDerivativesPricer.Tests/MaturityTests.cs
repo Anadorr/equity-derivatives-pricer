@@ -29,11 +29,27 @@ namespace EquityDerivativesPricer.Tests
 		}
 
 		[Test]
-		public void Parse_EmptyString_ThrowsException()
+		public void Parse_EmptyString_ThrowsArgumentNullException()
 		{
 			var maturity = "";
 
 			Assert.That(() => Maturity.Parse(maturity), Throws.ArgumentNullException);
+		}
+
+		[Test]
+		public void Parse_EmptyLength_ThrowsInvalidOperationException()
+		{
+			var maturity = "Y";
+
+			Assert.That(() => Maturity.Parse(maturity), Throws.InvalidOperationException);
+		}
+
+		[Test]
+		public void Parse_EmptyPeriod_ThrowsInvalidOperationException()
+		{
+			var maturity = "12";
+
+			Assert.That(() => Maturity.Parse(maturity), Throws.InvalidOperationException);
 		}
 	}
 }

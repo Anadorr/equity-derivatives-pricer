@@ -26,7 +26,7 @@ namespace EquityDerivativesPricer.Domain.SharedKernel
 
 			if (!Maturity.TryParse(maturity, out var parsedMaturity))
 			{
-				throw new FormatException($"Cannot parse {maturity} into a Maturity object.");
+				throw new InvalidOperationException($"Cannot parse \"{maturity}\" into a Maturity object.");
 			}
 
 			return parsedMaturity!;
