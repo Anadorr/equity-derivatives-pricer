@@ -7,11 +7,11 @@ namespace EquityDerivativesPricer.Domain.SharedKernel
 		public int Length { get; set; }
 
 		[JsonConverter(typeof(JsonStringEnumConverter))]
-		public Tenor Period { get; set; }
+		public Period Period { get; set; }
 
 		public Maturity(
 			int length,
-			Tenor period)
+			Period period)
 		{
 			Length = length;
 			Period = period;
@@ -40,18 +40,18 @@ namespace EquityDerivativesPricer.Domain.SharedKernel
 
 			if (tenor.Equals("ON"))
 			{
-				parsedMaturity = new Maturity(1, Tenor.D);
+				parsedMaturity = new Maturity(1, Period.D);
 				return true;
 			}
 
 			if (length.Equals("12") && tenor.Equals("M"))
 			{
-				parsedMaturity = new Maturity(1, Tenor.Y);
+				parsedMaturity = new Maturity(1, Period.Y);
 				return true;
 			}
 
 			if (int.TryParse(length, out var parsedLength)
-				&& Enum.TryParse(tenor, out Tenor parsedTenor))
+				&& Enum.TryParse(tenor, out Period parsedTenor))
 			{
 				parsedMaturity = new Maturity(parsedLength, parsedTenor);
 				return true;
@@ -59,6 +59,18 @@ namespace EquityDerivativesPricer.Domain.SharedKernel
 
 			parsedMaturity = null;
 			return false;
+		}
+
+		public double ToYearFraction()
+		{
+			return Period switch
+			{
+				Period.D => Length / 365,
+				Period.W => Length * 7 / 365,
+				Period.M => Length * 30 / 365,
+				Period.Y => Length,
+				_ => throw new NotImplementedException(),
+			};
 		}
 	}
 }

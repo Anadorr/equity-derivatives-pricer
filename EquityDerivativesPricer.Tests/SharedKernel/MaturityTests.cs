@@ -1,25 +1,25 @@
 using EquityDerivativesPricer.Domain.SharedKernel;
 using NUnit.Framework;
 
-namespace EquityDerivativesPricer.Tests
+namespace EquityDerivativesPricer.Tests.SharedKernel
 {
 	[TestFixture]
 	public class MaturityTests
 	{
-		[SetUp]
+		[OneTimeSetUp]
 		public void Setup()
 		{
 		}
 
-		[TestCase("ON", 1, Tenor.D)]
-		[TestCase("1D", 1, Tenor.D)]
-		[TestCase("1W", 1, Tenor.W)]
-		[TestCase("1M", 1, Tenor.M)]
-		[TestCase("12M", 1, Tenor.Y)]
-		[TestCase("1Y", 1, Tenor.Y)]
-		[TestCase("1y", 1, Tenor.Y)]
-		[TestCase("10y", 10, Tenor.Y)]
-		public void Parse_Ok(string maturity, int length, Tenor period)
+		[TestCase("ON", 1, Period.D)]
+		[TestCase("1D", 1, Period.D)]
+		[TestCase("1W", 1, Period.W)]
+		[TestCase("1M", 1, Period.M)]
+		[TestCase("12M", 1, Period.Y)]
+		[TestCase("1Y", 1, Period.Y)]
+		[TestCase("1y", 1, Period.Y)]
+		[TestCase("10y", 10, Period.Y)]
+		public void Parse_Ok(string maturity, int length, Period period)
 		{
 			var parsedMaturity = Maturity.Parse(maturity);
 

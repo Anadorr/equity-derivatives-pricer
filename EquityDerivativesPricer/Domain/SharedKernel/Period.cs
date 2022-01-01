@@ -1,6 +1,6 @@
 ﻿namespace EquityDerivativesPricer.Domain.SharedKernel
 {
-	public enum Tenor
+	public enum Period
 	{
 		D,
 		W,
