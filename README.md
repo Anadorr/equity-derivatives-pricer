@@ -9,10 +9,10 @@ This API, written in C#, is set to ultimately allow anyone to price different de
 
 As of now, the API offers the possibility to price:
 
-- European options
+- **European options**
     - Analytic (Black-Scholes)
 
-- American options
+- **American options**
     - Binomial Tree
 
 ## How to run the project
