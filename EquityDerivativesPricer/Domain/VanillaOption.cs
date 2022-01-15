@@ -8,17 +8,6 @@ namespace EquityDerivativesPricer.Domain
 		public OptionType OptionType { get; set; }
 		public double Strike { get; set; }
 		public Maturity Maturity { get; set; }
-
-		public VanillaOption(
-			OptionStyle optionStyle,
-			OptionType optionType,
-			double strike,
-			Maturity maturity)
-		{
-			OptionStyle = optionStyle;
-			OptionType = optionType;
-			Strike = strike;
-			Maturity = maturity;
-		}
+		public Underlying Underlying { get; set; }
 	}
 }

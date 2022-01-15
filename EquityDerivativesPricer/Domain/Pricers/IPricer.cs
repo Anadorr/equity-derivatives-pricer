@@ -1,7 +1,9 @@
-﻿namespace EquityDerivativesPricer.Domain.Pricers
+﻿using EquityDerivativesPricer.Domain.Models;
+
+namespace EquityDerivativesPricer.Domain.Pricers
 {
 	public interface IPricer<T> where T : IPriceable
 	{
-		double PresentValue(NumericalMethod numericalMethod, T priceable, Stock underlyingStock);
+		PricingResult Price(PricingConfiguration pricingConfiguration, T priceable);
 	}
 }

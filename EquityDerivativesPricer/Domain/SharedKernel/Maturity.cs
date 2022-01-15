@@ -61,13 +61,25 @@ namespace EquityDerivativesPricer.Domain.SharedKernel
 			return false;
 		}
 
+		public Maturity ToDays()
+		{
+			return Period switch
+			{
+				Period.D => this,
+				Period.W => new Maturity(Length * 7, Period.D),
+				Period.M => new Maturity(Length * 30, Period.D),
+				Period.Y => new Maturity(Length * 365, Period.D),
+				_ => throw new NotImplementedException(),
+			};
+		}
+
 		public double ToYearFraction()
 		{
 			return Period switch
 			{
-				Period.D => Length / 365,
-				Period.W => Length * 7 / 365,
-				Period.M => Length * 30 / 365,
+				Period.D => Length / 365.0,
+				Period.W => Length * 7 / 365.0,
+				Period.M => Length * 30 / 365.0,
 				Period.Y => Length,
 				_ => throw new NotImplementedException(),
 			};
