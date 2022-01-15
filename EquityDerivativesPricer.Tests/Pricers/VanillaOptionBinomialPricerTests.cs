@@ -56,7 +56,7 @@ namespace EquityDerivativesPricer.Tests.VanillaOptions
 			var pricingResult = _pricer.Price(pricingConfig, vanillaOption);
 
 			// assert
-			Assert.AreEqual(7.5040, pricingResult.PresentValue, 0.0001);
+			Assert.AreEqual(7.5106, pricingResult.PresentValue, 0.0001);
 
 			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
 		}
@@ -96,7 +96,7 @@ namespace EquityDerivativesPricer.Tests.VanillaOptions
 			var pricingResult = _pricer.Price(pricingConfig, vanillaOption);
 
 			// assert
-			Assert.AreEqual(13.6841, pricingResult.PresentValue, 0.0001);
+			Assert.AreEqual(13.6906, pricingResult.PresentValue, 0.0001);
 
 			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
 		}
@@ -136,7 +136,130 @@ namespace EquityDerivativesPricer.Tests.VanillaOptions
 			var pricingResult = _pricer.Price(pricingConfig, vanillaOption);
 
 			// assert
-			Assert.AreEqual(3.3271, pricingResult.PresentValue, 0.0001);
+			Assert.AreEqual(3.3232, pricingResult.PresentValue, 0.0001);
+
+			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
+		}
+
+		[Test]
+		public void PriceHullAmericanCallOption_Ok()
+		{
+			// Options, Futures and Other Derivatives, Hull, p. 312
+			_interestRateCalculator.Reset();
+
+			// arrange
+			var underlying = new Underlying
+			{
+				Name = "AAPL",
+				SpotPrice = 50.0,
+				AnnualDividendYield = 0,
+				AnnualVolatility = 0.3,
+			};
+
+			var vanillaOption = new VanillaOption
+			{
+				OptionStyle = OptionStyle.AMERICAN,
+				OptionType = OptionType.PUT,
+				Strike = 52.0,
+				Maturity = Maturity.Parse("2Y"),
+				Underlying = underlying
+			};
+
+			_interestRateCalculator.Setup(x => x.GetAnnualRiskFreeRate()).Returns(0.05);
+
+			var pricingConfig = new PricingConfiguration
+			{
+				NumericalMethod = NumericalMethod.BinomialTree,
+				IsCalculationWithGreeks = true
+			};
+
+			// act
+			var pricingResult = _pricer.Price(pricingConfig, vanillaOption);
+
+			// assert
+			Assert.AreEqual(7.4709, pricingResult.PresentValue, 0.0001);
+
+			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
+		}
+
+		[Test]
+		public void PriceHullEuropeanCallOption_Ok()
+		{
+			// Options, Futures and Other Derivatives, Hull, p. 312
+			_interestRateCalculator.Reset();
+
+			// arrange
+			var underlying = new Underlying
+			{
+				Name = "AAPL",
+				SpotPrice = 50.0,
+				AnnualDividendYield = 0,
+				AnnualVolatility = 0.3,
+			};
+
+			var vanillaOption = new VanillaOption
+			{
+				OptionStyle = OptionStyle.EUROPEAN,
+				OptionType = OptionType.PUT,
+				Strike = 52.0,
+				Maturity = Maturity.Parse("2Y"),
+				Underlying = underlying
+			};
+
+			_interestRateCalculator.Setup(x => x.GetAnnualRiskFreeRate()).Returns(0.05);
+
+			var pricingConfig = new PricingConfiguration
+			{
+				NumericalMethod = NumericalMethod.BinomialTree,
+				IsCalculationWithGreeks = true
+			};
+
+			// act
+			var pricingResult = _pricer.Price(pricingConfig, vanillaOption);
+
+			// assert
+			Assert.AreEqual(6.7568, pricingResult.PresentValue, 0.0001);
+
+			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
+		}
+
+		[Test]
+		public void PriceHullEuropeanCallOption_WithContinuousDividendYield_Ok()
+		{
+			// Options, Futures and Other Derivatives, Hull, p. 313
+			_interestRateCalculator.Reset();
+
+			// arrange
+			var underlying = new Underlying
+			{
+				Name = "STOCK_INDEX",
+				SpotPrice = 810.0,
+				AnnualDividendYield = 0.02,
+				AnnualVolatility = 0.2,
+			};
+
+			var vanillaOption = new VanillaOption
+			{
+				OptionStyle = OptionStyle.EUROPEAN,
+				OptionType = OptionType.CALL,
+				Strike = 800.0,
+				Maturity = Maturity.Parse("6M"),
+				Underlying = underlying
+			};
+
+			_interestRateCalculator.Setup(x => x.GetAnnualRiskFreeRate()).Returns(0.05);
+
+			var pricingConfig = new PricingConfiguration
+			{
+				NumericalMethod = NumericalMethod.BinomialTree,
+				IsCalculationWithGreeks = true
+			};
+
+			// act
+			var pricingResult = _pricer.Price(pricingConfig, vanillaOption);
+
+			// assert
+			Assert.AreEqual(55.8754, pricingResult.PresentValue, 0.0001);
 
 			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
 		}

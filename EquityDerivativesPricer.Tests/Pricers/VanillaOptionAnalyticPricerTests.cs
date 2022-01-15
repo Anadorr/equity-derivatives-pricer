@@ -152,5 +152,46 @@ namespace EquityDerivativesPricer.Tests.VanillaOptions
 
 			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
 		}
+
+		[Test]
+		public void PriceHullEuropeanCallOption_WithContinuousDividendYield_Ok()
+		{
+			// Options, Futures and Other Derivatives, Hull, p. 313
+			_interestRateCalculator.Reset();
+
+			// arrange
+			var underlying = new Underlying
+			{
+				Name = "STOCK_INDEX",
+				SpotPrice = 810.0,
+				AnnualDividendYield = 0.02,
+				AnnualVolatility = 0.2,
+			};
+
+			var vanillaOption = new VanillaOption
+			{
+				OptionStyle = OptionStyle.EUROPEAN,
+				OptionType = OptionType.CALL,
+				Strike = 800.0,
+				Maturity = Maturity.Parse("6M"),
+				Underlying = underlying
+			};
+
+			_interestRateCalculator.Setup(x => x.GetAnnualRiskFreeRate()).Returns(0.05);
+
+			var pricingConfig = new PricingConfiguration
+			{
+				NumericalMethod = NumericalMethod.Analytic,
+				IsCalculationWithGreeks = true
+			};
+
+			// act
+			var pricingResult = _pricer.Price(pricingConfig, vanillaOption);
+
+			// assert
+			Assert.AreEqual(55.8954, pricingResult.PresentValue, 0.0001);
+
+			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
+		}
 	}
 }
