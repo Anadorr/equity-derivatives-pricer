@@ -1,6 +1,6 @@
 ﻿using EquityDerivativesPricer.Domain.Models;
 
-namespace EquityDerivativesPricer.Domain.Pricers
+namespace EquityDerivativesPricer.Domain.Services.Pricers
 {
 	public class VanillaOptionPricer : IPricer<VanillaOption>
 	{

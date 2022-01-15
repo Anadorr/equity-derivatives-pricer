@@ -1,8 +1,6 @@
-﻿using EquityDerivativesPricer.Domain;
-using EquityDerivativesPricer.Domain.Calculators;
-using EquityDerivativesPricer.Domain.Models;
-using EquityDerivativesPricer.Domain.Pricers;
-using EquityDerivativesPricer.Domain.SharedKernel;
+﻿using EquityDerivativesPricer.Domain.Models;
+using EquityDerivativesPricer.Domain.Services.Calculators;
+using EquityDerivativesPricer.Domain.Services.Pricers;
 using Moq;
 using NUnit.Framework;
 

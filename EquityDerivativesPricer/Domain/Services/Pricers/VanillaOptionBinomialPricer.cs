@@ -1,7 +1,7 @@
-﻿using EquityDerivativesPricer.Domain.Calculators;
-using EquityDerivativesPricer.Domain.Models;
+﻿using EquityDerivativesPricer.Domain.Models;
+using EquityDerivativesPricer.Domain.Services.Calculators;
 
-namespace EquityDerivativesPricer.Domain.Pricers
+namespace EquityDerivativesPricer.Domain.Services.Pricers
 {
 	public class VanillaOptionBinomialPricer : IVanillaOptionBinomialPricer
 	{

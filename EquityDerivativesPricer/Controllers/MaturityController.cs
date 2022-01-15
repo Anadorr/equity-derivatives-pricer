@@ -1,4 +1,4 @@
-﻿using EquityDerivativesPricer.Domain.SharedKernel;
+﻿using EquityDerivativesPricer.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EquityDerivativesPricer.Controllers

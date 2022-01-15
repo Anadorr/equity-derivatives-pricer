@@ -1,6 +1,4 @@
-﻿using EquityDerivativesPricer.Domain.SharedKernel;
-
-namespace EquityDerivativesPricer.Domain
+﻿namespace EquityDerivativesPricer.Domain.Models
 {
 	public class VanillaOption : IPriceable
 	{

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace EquityDerivativesPricer.Domain.SharedKernel
+namespace EquityDerivativesPricer.Domain.Models
 {
 	public class Maturity
 	{

@@ -1,4 +1,4 @@
-﻿namespace EquityDerivativesPricer.Domain
+﻿namespace EquityDerivativesPricer.Domain.Models
 {
 	/// <summary>
 	/// A class to model an equity stock.

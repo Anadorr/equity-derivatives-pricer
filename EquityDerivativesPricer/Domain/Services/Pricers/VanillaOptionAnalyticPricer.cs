@@ -1,8 +1,8 @@
-﻿using EquityDerivativesPricer.Domain.Calculators;
-using EquityDerivativesPricer.Domain.Models;
+﻿using EquityDerivativesPricer.Domain.Models;
+using EquityDerivativesPricer.Domain.Services.Calculators;
 using MathNet.Numerics.Distributions;
 
-namespace EquityDerivativesPricer.Domain.Pricers
+namespace EquityDerivativesPricer.Domain.Services.Pricers
 {
 	public class VanillaOptionAnalyticPricer : IVanillaOptionAnalyticPricer
 	{
