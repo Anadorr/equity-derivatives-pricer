@@ -263,5 +263,46 @@ namespace EquityDerivativesPricer.Tests.VanillaOptions
 
 			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
 		}
+
+		[Test]
+		public void PriceHullAmericanPutOption_Ok()
+		{
+			// Options, Futures and Other Derivatives, Hull, p. 475
+			_interestRateCalculator.Reset();
+
+			// arrange
+			var underlying = new Underlying
+			{
+				Name = "AAPL",
+				SpotPrice = 50.0,
+				AnnualDividendYield = 0,
+				AnnualVolatility = 0.4,
+			};
+
+			var vanillaOption = new VanillaOption
+			{
+				OptionStyle = OptionStyle.AMERICAN,
+				OptionType = OptionType.PUT,
+				Strike = 50.0,
+				Maturity = Maturity.Parse("5M"),
+				Underlying = underlying
+			};
+
+			_interestRateCalculator.Setup(x => x.GetAnnualRiskFreeRate()).Returns(0.1);
+
+			var pricingConfig = new PricingConfiguration
+			{
+				NumericalMethod = NumericalMethod.BinomialTree,
+				IsCalculationWithGreeks = true
+			};
+
+			// act
+			var pricingResult = _pricer.Price(pricingConfig, vanillaOption);
+
+			// assert
+			Assert.AreEqual(4.2590, pricingResult.PresentValue, 0.0001);
+
+			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
+		}
 	}
 }
