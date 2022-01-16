@@ -1,9 +1,9 @@
-﻿namespace EquityDerivativesPricer.Domain
+﻿namespace EquityDerivativesPricer.Domain.Models
 {
 	/// <summary>
 	/// A class to model an equity stock.
 	/// </summary>
-	public class Stock
+	public class Underlying
 	{
 		public AssetClass AssetClass => AssetClass.Equity;
 		public string Name { get; set; }

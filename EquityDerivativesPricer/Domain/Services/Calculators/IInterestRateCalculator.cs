@@ -1,4 +1,4 @@
-﻿namespace EquityDerivativesPricer.Domain.Calculators
+﻿namespace EquityDerivativesPricer.Domain.Services.Calculators
 {
 	public interface IInterestRateCalculator
 	{

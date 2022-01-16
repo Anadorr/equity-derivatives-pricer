@@ -1,7 +1,7 @@
-using EquityDerivativesPricer.Domain.SharedKernel;
+using EquityDerivativesPricer.Domain.Models;
 using NUnit.Framework;
 
-namespace EquityDerivativesPricer.Tests.SharedKernel
+namespace EquityDerivativesPricer.Tests.Models
 {
 	[TestFixture]
 	public class MaturityTests

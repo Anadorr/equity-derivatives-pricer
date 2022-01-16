@@ -1,4 +1,4 @@
-﻿namespace EquityDerivativesPricer.Domain
+﻿namespace EquityDerivativesPricer.Domain.Models
 {
 	public enum NumericalMethod
 	{
