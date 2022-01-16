@@ -57,6 +57,11 @@ namespace EquityDerivativesPricer.Tests.VanillaOptions
 
 			// assert
 			Assert.AreEqual(7.5106, pricingResult.PresentValue, 0.0001);
+			Assert.AreEqual(0.5217, pricingResult.Delta, 0.0001);
+			Assert.AreEqual(0.0202, pricingResult.Gamma, 0.0001);
+			Assert.AreEqual(39.4014, pricingResult.Vega, 0.0001);
+			Assert.AreEqual(-3.5247, pricingResult.Theta, 0.0001);
+			Assert.AreEqual(38.5076, pricingResult.Rho, 0.0001);
 
 			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
 		}
@@ -97,6 +102,11 @@ namespace EquityDerivativesPricer.Tests.VanillaOptions
 
 			// assert
 			Assert.AreEqual(13.6906, pricingResult.PresentValue, 0.0001);
+			Assert.AreEqual(0.7064, pricingResult.Delta, 0.0001);
+			Assert.AreEqual(0.0162, pricingResult.Gamma, 0.0001);
+			Assert.AreEqual(36.9291, pricingResult.Vega, 0.0001);
+			Assert.AreEqual(-3.1660, pricingResult.Theta, 0.0001);
+			Assert.AreEqual(49.5059, pricingResult.Rho, 0.0001);
 
 			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
 		}
@@ -137,12 +147,17 @@ namespace EquityDerivativesPricer.Tests.VanillaOptions
 
 			// assert
 			Assert.AreEqual(3.3232, pricingResult.PresentValue, 0.0001);
+			Assert.AreEqual(0.3166, pricingResult.Delta, 0.0001);
+			Assert.AreEqual(0.0198, pricingResult.Gamma, 0.0001);
+			Assert.AreEqual(32.4207, pricingResult.Vega, 0.0001);
+			Assert.AreEqual(-2.9380, pricingResult.Theta, 0.0001);
+			Assert.AreEqual(23.3413, pricingResult.Rho, 0.0001);
 
 			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
 		}
 
 		[Test]
-		public void PriceHullAmericanCallOption_Ok()
+		public void PriceHullAmericanPutOption_Ok()
 		{
 			// Options, Futures and Other Derivatives, Hull, p. 312
 			_interestRateCalculator.Reset();
@@ -183,7 +198,7 @@ namespace EquityDerivativesPricer.Tests.VanillaOptions
 		}
 
 		[Test]
-		public void PriceHullEuropeanCallOption_Ok()
+		public void PriceHullEuropeanPutOption_Ok()
 		{
 			// Options, Futures and Other Derivatives, Hull, p. 312
 			_interestRateCalculator.Reset();
@@ -260,47 +275,11 @@ namespace EquityDerivativesPricer.Tests.VanillaOptions
 
 			// assert
 			Assert.AreEqual(55.8754, pricingResult.PresentValue, 0.0001);
-
-			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
-		}
-
-		[Test]
-		public void PriceHullAmericanPutOption_Ok()
-		{
-			// Options, Futures and Other Derivatives, Hull, p. 475
-			_interestRateCalculator.Reset();
-
-			// arrange
-			var underlying = new Underlying
-			{
-				Name = "AAPL",
-				SpotPrice = 50.0,
-				AnnualDividendYield = 0,
-				AnnualVolatility = 0.4,
-			};
-
-			var vanillaOption = new VanillaOption
-			{
-				OptionStyle = OptionStyle.AMERICAN,
-				OptionType = OptionType.PUT,
-				Strike = 50.0,
-				Maturity = Maturity.Parse("5M"),
-				Underlying = underlying
-			};
-
-			_interestRateCalculator.Setup(x => x.GetAnnualRiskFreeRate()).Returns(0.1);
-
-			var pricingConfig = new PricingConfiguration
-			{
-				NumericalMethod = NumericalMethod.BinomialTree,
-				IsCalculationWithGreeks = true
-			};
-
-			// act
-			var pricingResult = _pricer.Price(pricingConfig, vanillaOption);
-
-			// assert
-			Assert.AreEqual(4.2590, pricingResult.PresentValue, 0.0001);
+			Assert.AreEqual(0.5981, pricingResult.Delta, 0.0001);
+			Assert.AreEqual(0.0033, pricingResult.Gamma, 0.0001);
+			Assert.AreEqual(217.7714, pricingResult.Vega, 0.0001);
+			Assert.AreEqual(-55.8134, pricingResult.Theta, 0.0001);
+			Assert.AreEqual(211.4960, pricingResult.Rho, 0.0001);
 
 			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
 		}
