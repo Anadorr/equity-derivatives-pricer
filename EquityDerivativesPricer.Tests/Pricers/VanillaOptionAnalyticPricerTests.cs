@@ -61,6 +61,7 @@ namespace EquityDerivativesPricer.Tests.VanillaOptions
 			Assert.AreEqual(0.0197, pricingResult.Gamma, 0.0001);
 			Assert.AreEqual(39.4479, pricingResult.Vega, 0.0001);
 			Assert.AreEqual(-3.4300, pricingResult.Theta, 0.0001);
+			Assert.AreEqual(44.0382, pricingResult.Rho, 0.0001);
 
 			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
 		}
@@ -105,6 +106,7 @@ namespace EquityDerivativesPricer.Tests.VanillaOptions
 			Assert.AreEqual(0.0156, pricingResult.Gamma, 0.0001);
 			Assert.AreEqual(37.8229, pricingResult.Vega, 0.0001);
 			Assert.AreEqual(-3.0191, pricingResult.Theta, 0.0001);
+			Assert.AreEqual(62.7996, pricingResult.Rho, 0.0001);
 
 			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
 		}
@@ -149,6 +151,7 @@ namespace EquityDerivativesPricer.Tests.VanillaOptions
 			Assert.AreEqual(0.0196, pricingResult.Gamma, 0.0001);
 			Assert.AreEqual(31.7280, pricingResult.Vega, 0.0001);
 			Assert.AreEqual(-2.8906, pricingResult.Theta, 0.0001);
+			Assert.AreEqual(24.9265, pricingResult.Rho, 0.0001);
 
 			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
 		}
@@ -190,6 +193,11 @@ namespace EquityDerivativesPricer.Tests.VanillaOptions
 
 			// assert
 			Assert.AreEqual(55.8954, pricingResult.PresentValue, 0.0001);
+			Assert.AreEqual(0.5981, pricingResult.Delta, 0.0001);
+			Assert.AreEqual(0.0033, pricingResult.Gamma, 0.0001);
+			Assert.AreEqual(217.0031, pricingResult.Vega, 0.0001);
+			Assert.AreEqual(-55.7445, pricingResult.Theta, 0.0001);
+			Assert.AreEqual(211.3813, pricingResult.Rho, 0.0001);
 
 			_interestRateCalculator.Verify(x => x.GetAnnualRiskFreeRate(), Times.Once);
 		}

@@ -58,6 +58,7 @@ namespace EquityDerivativesPricer.Domain.Services.Pricers
 				pricingResult.Gamma = Gamma(spotPrice, q, timeToMaturity, d_1, sigma);
 				pricingResult.Vega = Vega(spotPrice, q, timeToMaturity, d_1);
 				pricingResult.Theta = Theta(multiplier, q, timeToMaturity, spotPrice, d_1, sigma, riskFreeInterestRate, strike, d_2);
+				pricingResult.Rho = Rho(multiplier, timeToMaturity, riskFreeInterestRate, strike, d_2);
 			}
 
 			return pricingResult;
@@ -84,6 +85,11 @@ namespace EquityDerivativesPricer.Domain.Services.Pricers
 			return -Math.Exp(-q * tau) * S * Normal.PDF(0, 1, d_1) * sigma / (2 * Math.Sqrt(tau))
 				- multiplier * r * K * Math.Exp(-r * tau) * Normal.CDF(0, 1, multiplier * d_2)
 				+ multiplier * q * S * Math.Exp(-q * tau) * Normal.CDF(0, 1, multiplier * d_1);
+		}
+
+		private double Rho(int multiplier, double tau, double r, double K, double d_2)
+		{
+			return multiplier * K * tau * Math.Exp(-r * tau) * Normal.CDF(0, 1, multiplier * d_2);
 		}
 	}
 }
