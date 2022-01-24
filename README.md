@@ -7,12 +7,12 @@ An Equity derivatives pricer.
 ## Description
 This API, written in C#, is set to ultimately allow anyone to price different derivatives on equity, with various numerical methods.
 
-As of now, the API offers the possibility to price:
+As of now, the API offers the possibility to price (greeks included):
     
 | Derivative  | Analytic | Binomial Tree | Monte Carlo | Finite Differences |
 | ------------- | :-------------: | :-------------: | :-------------: | :-------------: |
-| European Option  | ✅ | ✅ |  |  |  |
-| American Option  |  | ✅ |  |  |  |
+| European Option  | ✅ | ✅ | ✅ |  |  |
+| American Option  |  | ✅ | ✅ |  |  |
 
 
 ## How to run the project

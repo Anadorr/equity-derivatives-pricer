@@ -18,56 +18,9 @@ namespace EquityDerivativesPricer.Domain.Services.Pricers
 
 		public PricingResult Price(PricingConfiguration config, VanillaOption option)
 		{
-			var pricingResult = new PricingResult { };
-
 			var riskFreeInterestRate = _interestRateCalculator.GetAnnualRiskFreeRate();
-
 			var binomialTreeResult = BinomialTree(option, riskFreeInterestRate);
-
-			pricingResult.PresentValue = binomialTreeResult.OptionPrices[0, 0];
-
-			if (config.IsCalculationWithGreeks)
-			{
-				pricingResult.Delta = (binomialTreeResult.OptionPrices[1, 1] - binomialTreeResult.OptionPrices[1, 0])
-					/ (option.Underlying.SpotPrice * binomialTreeResult.U - option.Underlying.SpotPrice * binomialTreeResult.D);
-
-				pricingResult.Gamma = ((binomialTreeResult.OptionPrices[2, 2] - binomialTreeResult.OptionPrices[2, 1])
-					/ (option.Underlying.SpotPrice * binomialTreeResult.U * binomialTreeResult.U - option.Underlying.SpotPrice)
-							- (binomialTreeResult.OptionPrices[2, 1] - binomialTreeResult.OptionPrices[2, 0])
-							/ (option.Underlying.SpotPrice - option.Underlying.SpotPrice * binomialTreeResult.D * binomialTreeResult.D))
-							/ (0.5 * option.Underlying.SpotPrice * (binomialTreeResult.U * binomialTreeResult.U - binomialTreeResult.D * binomialTreeResult.D));
-
-				pricingResult.Theta = (binomialTreeResult.OptionPrices[2, 1] - binomialTreeResult.OptionPrices[0, 0]) / (2 * binomialTreeResult.DeltaT);
-
-				// Vega
-				var dSigma = option.Underlying.AnnualVolatility * _bumpVolatility;
-				var bumpedVolatility = option.Underlying.AnnualVolatility + dSigma;
-				var optionBumpedVol = new VanillaOption
-				{
-					Underlying = new Underlying
-					{
-						SpotPrice = option.Underlying.SpotPrice,
-						AnnualDividendYield = option.Underlying.AnnualDividendYield,
-						AnnualVolatility = bumpedVolatility
-					},
-					OptionStyle = option.OptionStyle,
-					OptionType = option.OptionType,
-					Strike = option.Strike,
-					Maturity = option.Maturity
-				};
-				var bumpedVolBinomialTreeResult = BinomialTree(optionBumpedVol, riskFreeInterestRate);
-				pricingResult.Vega = (bumpedVolBinomialTreeResult.OptionPrices[0, 0] - binomialTreeResult.OptionPrices[0, 0]) / dSigma;
-
-				// Rho
-				var dRho = Math.Abs(riskFreeInterestRate) < 0.0001
-					? _bumpRiskFreeRate
-					: riskFreeInterestRate * _bumpRiskFreeRate;
-
-				var bumpedInterestRate = riskFreeInterestRate + dRho;
-				var bumpedRiskFreeInterestRateBinomialTreeResult = BinomialTree(option, bumpedInterestRate);
-				pricingResult.Rho = (bumpedRiskFreeInterestRateBinomialTreeResult.OptionPrices[0, 0] - binomialTreeResult.OptionPrices[0, 0])
-					/ dRho;
-			}
+			var pricingResult = ExtractPricingResult(config, option, riskFreeInterestRate, binomialTreeResult);
 
 			return pricingResult;
 		}
@@ -128,6 +81,62 @@ namespace EquityDerivativesPricer.Domain.Services.Pricers
 				DeltaT = deltaT,
 				NumberOfTimeSteps = _numberOfTimeSteps
 			};
+		}
+
+		private PricingResult ExtractPricingResult(
+			PricingConfiguration config,
+			VanillaOption option,
+			double riskFreeInterestRate,
+			BinomialTreeResult binomialTreeResult)
+		{
+			var pricingResult = new PricingResult { };
+
+			pricingResult.PresentValue = binomialTreeResult.OptionPrices[0, 0];
+
+			if (config.IsCalculationWithGreeks)
+			{
+				pricingResult.Delta = (binomialTreeResult.OptionPrices[1, 1] - binomialTreeResult.OptionPrices[1, 0])
+					/ (option.Underlying.SpotPrice * binomialTreeResult.U - option.Underlying.SpotPrice * binomialTreeResult.D);
+
+				pricingResult.Gamma = ((binomialTreeResult.OptionPrices[2, 2] - binomialTreeResult.OptionPrices[2, 1])
+					/ (option.Underlying.SpotPrice * binomialTreeResult.U * binomialTreeResult.U - option.Underlying.SpotPrice)
+							- (binomialTreeResult.OptionPrices[2, 1] - binomialTreeResult.OptionPrices[2, 0])
+							/ (option.Underlying.SpotPrice - option.Underlying.SpotPrice * binomialTreeResult.D * binomialTreeResult.D))
+							/ (0.5 * option.Underlying.SpotPrice * (binomialTreeResult.U * binomialTreeResult.U - binomialTreeResult.D * binomialTreeResult.D));
+
+				pricingResult.Theta = (binomialTreeResult.OptionPrices[2, 1] - binomialTreeResult.OptionPrices[0, 0]) / (2 * binomialTreeResult.DeltaT);
+
+				// Vega
+				var dSigma = option.Underlying.AnnualVolatility * _bumpVolatility;
+				var bumpedVolatility = option.Underlying.AnnualVolatility + dSigma;
+				var optionBumpedVol = new VanillaOption
+				{
+					Underlying = new Underlying
+					{
+						SpotPrice = option.Underlying.SpotPrice,
+						AnnualDividendYield = option.Underlying.AnnualDividendYield,
+						AnnualVolatility = bumpedVolatility
+					},
+					OptionStyle = option.OptionStyle,
+					OptionType = option.OptionType,
+					Strike = option.Strike,
+					Maturity = option.Maturity
+				};
+				var bumpedVolBinomialTreeResult = BinomialTree(optionBumpedVol, riskFreeInterestRate);
+				pricingResult.Vega = (bumpedVolBinomialTreeResult.OptionPrices[0, 0] - binomialTreeResult.OptionPrices[0, 0]) / dSigma;
+
+				// Rho
+				var dRho = Math.Abs(riskFreeInterestRate) < 0.0001
+					? _bumpRiskFreeRate
+					: riskFreeInterestRate * _bumpRiskFreeRate;
+
+				var bumpedInterestRate = riskFreeInterestRate + dRho;
+				var bumpedRiskFreeInterestRateBinomialTreeResult = BinomialTree(option, bumpedInterestRate);
+				pricingResult.Rho = (bumpedRiskFreeInterestRateBinomialTreeResult.OptionPrices[0, 0] - binomialTreeResult.OptionPrices[0, 0])
+					/ dRho;
+			}
+
+			return pricingResult;
 		}
 	}
 }
