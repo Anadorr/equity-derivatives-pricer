@@ -9,7 +9,7 @@ This API, written in C#, is set to ultimately allow anyone to price different de
 
 As of now, the API offers the possibility to price (greeks included):
     
-| Derivative  | Analytic | Binomial Tree | Monte Carlo | Finite Differences |
+| Derivative  | Analytic | Binomial Tree | Finite Differences | Monte Carlo |
 | ------------- | :-------------: | :-------------: | :-------------: | :-------------: |
 | European Option  | ✅ | ✅ | ✅ |  |  |
 | American Option  |  | ✅ | ✅ |  |  |
