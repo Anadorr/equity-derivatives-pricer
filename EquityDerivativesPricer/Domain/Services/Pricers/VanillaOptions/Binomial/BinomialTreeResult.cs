@@ -1,4 +1,4 @@
-﻿namespace EquityDerivativesPricer.Domain.Services.Pricers
+﻿namespace EquityDerivativesPricer.Domain.Services.Pricers.VanillaOptions.Binomial
 {
 	public class BinomialTreeResult
 	{
