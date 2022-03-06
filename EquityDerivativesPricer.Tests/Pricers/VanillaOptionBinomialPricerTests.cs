@@ -1,6 +1,6 @@
 ﻿using EquityDerivativesPricer.Domain.Models;
 using EquityDerivativesPricer.Domain.Services.Calculators;
-using EquityDerivativesPricer.Domain.Services.Pricers;
+using EquityDerivativesPricer.Domain.Services.Pricers.VanillaOptions.Binomial;
 using Moq;
 using NUnit.Framework;
 

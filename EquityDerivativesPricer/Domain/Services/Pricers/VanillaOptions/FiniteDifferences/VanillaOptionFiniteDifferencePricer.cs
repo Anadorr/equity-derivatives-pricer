@@ -1,7 +1,7 @@
 ﻿using EquityDerivativesPricer.Domain.Models;
 using EquityDerivativesPricer.Domain.Services.Calculators;
 
-namespace EquityDerivativesPricer.Domain.Services.Pricers
+namespace EquityDerivativesPricer.Domain.Services.Pricers.VanillaOptions.FiniteDifferences
 {
 	public class VanillaOptionFiniteDifferencePricer : IVanillaOptionFiniteDifferencePricer
 	{

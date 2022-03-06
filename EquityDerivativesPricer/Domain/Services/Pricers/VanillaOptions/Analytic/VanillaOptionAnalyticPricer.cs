@@ -2,7 +2,7 @@
 using EquityDerivativesPricer.Domain.Services.Calculators;
 using MathNet.Numerics.Distributions;
 
-namespace EquityDerivativesPricer.Domain.Services.Pricers
+namespace EquityDerivativesPricer.Domain.Services.Pricers.VanillaOptions.Analytic
 {
 	public class VanillaOptionAnalyticPricer : IVanillaOptionAnalyticPricer
 	{
